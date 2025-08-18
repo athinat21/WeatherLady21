@@ -21,8 +21,8 @@ public class Location {
 
     }
 
-    public Location(UUID id, String city, String region, String country, double latitude, double longitude) {
-        this.id = id;
+    public Location( String city, String region, String country, double latitude, double longitude) {
+        this.id = UUID.randomUUID();
         this.city = city;
         this.region = region;
         this.country = country;
@@ -76,17 +76,5 @@ public class Location {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "id=" + id +
-                ", city='" + city + '\'' +
-                ", region='" + region + '\'' +
-                ", country='" + country + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
     }
 }

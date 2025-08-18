@@ -22,7 +22,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- mapimi i klasave-->
-        <mapping class=""/>
+        <mapping class="entity.Location"/>
+        <mapping class="entity.WeatherData"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -35,7 +35,7 @@ public class WeatherDAO {
 
         //query per te marr te dhenat e motit per qytetin dhe vendin
         //qe kemi vendos. Kjo metode ekzekuton nje HQL(Hibernate Query Lnaguage)
-        String hql = "FROM WeatherData wd WHERE wd.location.city = :city AND wd.location.country";
+        String hql = "FROM WeatherData wd WHERE wd.location.city = :city AND wd.location.country =:country";
         //krijo nje query qe eshte e bazuar ne hql dhe ekzekuton ne entitetin WeatherData
         Query<WeatherData> query = session.createQuery(hql, WeatherData.class);
         query.setParameter("city", city);

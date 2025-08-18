@@ -23,7 +23,9 @@ public class WeatherData {
     @JoinColumn(name = "location_id") //kollona qe lidhet me location
     private Location location; //lidhja me klasen location
 
-    public WeatherData(){}
+    public WeatherData(){
+
+    }
 
     public WeatherData(LocalDate date, double temperature, double pressure, double humidity, double windSpeed, double windDirection, Location location) {
         this.date = date;
