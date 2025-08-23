@@ -1,0 +1,8 @@
+Cfare eshte JSON?
+Javascript Object Notation
+eshte nje format teksti per shkembimin e te dhenave ne menyre te lexueshme
+Struktura eshte celes: vlere
+{
+"emri":"Athina",
+"mosha":"26
+}

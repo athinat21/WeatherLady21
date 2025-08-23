@@ -1,9 +1,11 @@
 package service;
 
+import apiClasses.OpenWeatherClient;
 import dao.LocationDAO;
 import dao.WeatherDAO;
 import entity.Location;
 import entity.WeatherData;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,7 +26,48 @@ public class WeatherService {
 
     //LLOGARITJA E TEMP MES PER NJE QYTEt
     public double calculateAverageTemperature(String city, String country){
-        //merr location nga city dhe country
+
+        try {
+            //kerko ne databaze nese ekziston Location apo jo
+            Location loc = locationDAO.getLocationByCityAndCountry(city, country);
+            JSONObject json;
+
+            if (loc != null){
+                json = OpenWeatherClient.currentByLatLon(loc.getLatitude(), loc.getLongitude());
+            } else {
+                json = OpenWeatherClient.currentByCityCountry(city, country);
+            }
+
+            double temp = json.getJSONObject("main").getDouble("temp");
+            double pressure = json.getJSONObject("main").getDouble("pressure");
+            double humidity = json.getJSONObject("main").getDouble("humidity");
+
+            double windSpeed = json.has("wind") && json.getJSONObject("wind").has("speed")
+                    ?json.getJSONObject("wind").getDouble("speed") : 0.0;
+
+            double windDeg = json.has("wind") && json.getJSONObject("wind").has("deg")
+                    ?json.getJSONObject("wind").getDouble("deg") : 0.0;
+
+            //nese ne databze nuk e ke location te ruajtur
+            if (loc == null){
+                double lat  = json.getJSONObject("coord").getDouble("lat");
+                double lon  = json.getJSONObject("coord").getDouble("lon");
+
+                loc = new Location(city, "Unknown", country, lat, lon);
+                locationDAO.saveLocation(loc);
+
+            }
+            WeatherData wd = new WeatherData( LocalDate.now(), temp, pressure, humidity, windSpeed, windDeg, loc);
+            weatherDAO.saveWeatherData(wd);
+            return temp;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return Double.NaN;
+        }
+
+
+      /*  //merr location nga city dhe country
        Location location = locationDAO.getLocationByCityAndCountry(city, country);
 
        //merr te dhenat e motit per qytetin dhe shtetin
@@ -35,7 +78,7 @@ public class WeatherService {
         for (WeatherData data : weatherDataList){
             totalTemp += data.getTemperature();
         }
-        return totalTemp /weatherDataList.size();
+        return totalTemp /weatherDataList.size();*/
     }
 
     // metoda per leximin e file-it csv

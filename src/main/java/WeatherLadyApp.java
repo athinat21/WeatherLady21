@@ -2,6 +2,7 @@ import dao.LocationDAO;
 import entity.Location;
 import service.WeatherService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class WeatherLadyApp {
@@ -15,6 +16,8 @@ public class WeatherLadyApp {
             System.out.println("2. Shiko mesataren e temperaturës për qytet");
             System.out.println("3. Dalje");
             System.out.println("4. Importo të dhëna moti nga CSV");
+            System.out.println("5. Shiko te gjitha qytetet e futura");
+
 
             System.out.print("Zgjedhja: ");
             int choice = scanner.nextInt();
@@ -63,6 +66,19 @@ public class WeatherLadyApp {
                     System.out.println("Shkruaj path-in e plote te CSV file: ");
                     String csvPath = scanner.nextLine();
                     weatherService.importWeatherDataFromCSV(csvPath);
+                    break;
+
+                case 5:
+                    List<Location> alllocations = new LocationDAO().getAllLocations();
+                    if (alllocations.isEmpty()){
+                        System.out.println("Nuk ka vendodhje ne databaze");
+                    } else {
+                        System.out.println("----Lista e vendodhjeve ----");
+                        for (Location loc : alllocations) {
+                            System.out.printf("Qyteti:  %s | Shteti: %s | Rajoni: %s | Lat: %.2f | Lon: %.2f%n",
+                                    loc.getCity(), loc.getCountry(),loc.getRegion(),loc.getLatitude(), loc.getLongitude());
+                        }
+                    }
                     break;
 
                 default:

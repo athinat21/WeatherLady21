@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import util.HibernateUtil;
 
+import java.util.List;
+
 public class LocationDAO {
 
     public  void saveLocation(Location location){
@@ -29,4 +31,15 @@ public class LocationDAO {
 
         return location;
     }
+
+    public List<Location> getAllLocations(){
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+
+        List<Location> locations = session.createQuery("FROM Location", Location.class).list();
+
+        transaction.commit();
+        return locations;
+    }
+
 }
